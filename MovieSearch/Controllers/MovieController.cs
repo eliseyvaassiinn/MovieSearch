@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using MovieSearch.Models;
-using MovieSearch.Services.Interfaces;
+using MovieSearch.BLL.Services.Interfaces;
+using MovieSearch.DAL.Models;
 
 namespace MovieSearch.Controllers;
 

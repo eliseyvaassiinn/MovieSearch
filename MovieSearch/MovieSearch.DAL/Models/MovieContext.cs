@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace MovieSearch.Models;
+namespace MovieSearch.DAL.Models;
 
 public class MovieContext : DbContext
 {

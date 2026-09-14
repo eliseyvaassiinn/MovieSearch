@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
-using MovieSearch.Models;
-using MovieSearch.Services.Extensions;
+using MovieSearch.BLL.Services.Extensions;
+using MovieSearch.DAL.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 

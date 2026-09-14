@@ -1,12 +1,12 @@
-﻿using MovieSearch.Models;
+﻿using MovieSearch.DAL.Models;
 
-namespace MovieSearch.Repositories.Interfaces;
+namespace MovieSearch.BLL.Services.Interfaces;
 
-public interface IMovieRepository
+public interface IMovieService
 {
     Task<IEnumerable<Movie>> GetAllAsync();
     Task<Movie?> GetByIdAsync(int id);
-    Task AddAsync(Movie movie);
+    Task CreateAsync(Movie movie);
     Task UpdateAsync(Movie movie);
     Task DeleteAsync(int id);
 }
