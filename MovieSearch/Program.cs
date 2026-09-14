@@ -1,65 +1,34 @@
-using System.Text.Json;
+using Microsoft.EntityFrameworkCore;
+using MovieSearch.Models;
+using MovieSearch.Services.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddHttpClient();
+builder.Services.AddControllers();
+
+builder.Services.AddDbContext<MovieContext>(options =>
+    options.UseSqlite(
+        builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddMovieServices();
+
+builder.Services.AddOpenApi();
 
 var app = builder.Build();
 
-app.UseDefaultFiles();
-app.UseStaticFiles();
-
-app.MapGet("/api/search", async (string title, IHttpClientFactory httpClientFactory) =>
+using (var scope = app.Services.CreateScope())
 {
-    if (string.IsNullOrWhiteSpace(title))
-    {
-        return Results.BadRequest(new
-        {
-            error = "Введите название фильма"
-        });
-    }
+    var db = scope.ServiceProvider.GetRequiredService<MovieContext>();
+    db.Database.EnsureCreated();
+}
 
-    const string apiKey = "ccdefeff";
+if (app.Environment.IsDevelopment())
+{
+    app.MapOpenApi();
+}
 
-    var encodedTitle = Uri.EscapeDataString(title);
+app.UseHttpsRedirection();
 
-    var url = $"https://www.omdbapi.com/?apikey={apiKey}&t={encodedTitle}&plot=full";
-
-    try
-    {
-        var client = httpClientFactory.CreateClient();
-
-        var response = await client.GetAsync(url);
-
-        if (!response.IsSuccessStatusCode)
-        {
-            return Results.Problem("Ошибка");
-        }
-
-        var json = await response.Content.ReadAsStringAsync();
-
-        using var document = JsonDocument.Parse(json);
-        var root = document.RootElement;
-
-        if (root.TryGetProperty("Response", out var responseProperty) &&
-            responseProperty.GetString() == "False")
-        {
-            var error = root.TryGetProperty("Error", out var errorProperty)
-                ? errorProperty.GetString()
-                : "Фильм не найдено";
-
-            return Results.NotFound(new
-            {
-                error
-            });
-        }
-
-        return Results.Content(json, "application/json");
-    }
-    catch (Exception ex)
-    {
-        return Results.Problem($"Ошибка: {ex.Message}");
-    }
-});
+app.MapControllers();
 
 app.Run();
