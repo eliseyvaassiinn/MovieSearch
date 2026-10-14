@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Кинопоиск</title>
+    <title data-i18n="title">Кінопошук</title>
 
     <link rel="stylesheet" href="/css/style.css">
 </head>
@@ -13,10 +13,16 @@
 
 <main class="container">
 
-    <h1>🎬 Кинопоиск</h1>
+    <div class="language-switcher">
+        <button data-lang="uk">UA</button>
+        <button data-lang="es">ES</button>
+        <button data-lang="en">EN</button>
+    </div>
 
-    <p class="subtitle">
-        Надите инфо про любой фильм
+    <h1>🎬 <span data-i18n="title">Кінопошук</span></h1>
+
+    <p class="subtitle" data-i18n="subtitle">
+        Знайдіть інформацію про будь-який фільм
     </p>
 
     <div class="search-box">
@@ -24,11 +30,12 @@
         <input
                 type="text"
                 id="movieInput"
-                placeholder="Введите название фильма..."
+                data-i18n-placeholder="placeholder"
+                placeholder="Введіть назву фільму..."
         >
 
-        <button id="searchButton">
-            Поиск
+        <button id="searchButton" data-i18n="search">
+            Пошук
         </button>
 
     </div>
